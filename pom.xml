@@ -52,6 +52,26 @@
                 <artifactId>sonar-maven-plugin</artifactId>
                 <version>3.9.1.2184</version>
             </plugin>
+
+            <plugin>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>0.8.8</version>  <!-- Use the latest version -->
+            <executions>
+                <execution>
+                    <goals>
+                        <goal>prepare-agent</goal>  <!-- Prepares JaCoCo agent for coverage collection -->
+                    </goals>
+                </execution>
+                <execution>
+                    <goals>
+                        <goal>report</goal>  <!-- Generates the code coverage report -->
+                    </goals>
+                    <phase>prepare-package</phase>  <!-- Execute during the package phase -->
+                </execution>
+            </executions>
+        </plugin>
+                 
         </plugins>
     </build>
 </project>
