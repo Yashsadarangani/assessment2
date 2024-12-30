@@ -10,11 +10,11 @@
     <description>A sample project demonstrating Jenkins pipeline with SonarQube integration.</description>
 
     <dependencies>
-        <!-- JUnit dependency for unit testing -->
+        <!-- JUnit 5 dependency for unit testing (JUnit 4 is removed) -->
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.13.2</version>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.7.2</version>
             <scope>test</scope>
         </dependency>
 
@@ -24,29 +24,11 @@
             <artifactId>selenium-java</artifactId>
             <version>4.27.0</version>
         </dependency>
-
-         <dependency>
-        <groupId>org.junit.jupiter</groupId>
-         <artifactId>junit-jupiter-api</artifactId>
-           <version>5.7.2</version>
-             <scope>test</scope>
-         </dependency>
     </dependencies>
-
-    <properties>
-        <!-- Java compiler version -->
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-
-        <!-- SonarQube properties -->
-        <sonar.projectKey>assessment2</sonar.projectKey>
-        <sonar.host.url>http://localhost:9000</sonar.host.url>
-        <sonar.login>${env.SONAR_TOKEN}</sonar.login> <!-- SonarQube token from environment variable -->
-    </properties>
 
     <build>
         <plugins>
-            <!-- Maven Compiler Plugin -->
+            <!-- Maven Compiler Plugin (Java 17) -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -92,4 +74,11 @@
             </plugin>
         </plugins>
     </build>
+
+    <properties>
+        <!-- SonarQube properties -->
+        <sonar.projectKey>assessment2</sonar.projectKey>
+        <sonar.host.url>http://localhost:9000</sonar.host.url>
+        <sonar.login>${env.SONAR_TOKEN}</sonar.login> <!-- SonarQube token from environment variable -->
+    </properties>
 </project>
