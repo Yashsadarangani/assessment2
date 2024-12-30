@@ -17,7 +17,10 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building the project...'
-                bat 'mvn clean package'
+                bat '''
+                mvn clean package
+                mvn clean install
+                '''
             }
         }
         stage('SonarQube Analysis') {
