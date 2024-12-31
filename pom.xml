@@ -1,84 +1,96 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.example</groupId>
-    <artifactId>assessment2</artifactId>
+    <artifactId>automation</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>Assessment2</name>
-    <description>A sample project demonstrating Jenkins pipeline with SonarQube integration.</description>
+
+
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <sonar.projectKey>assessment2</sonar.projectKey>
+        <sonar.host.url>http://localhost:9000</sonar.host.url>
+        <sonar.sources>src/main/java</sonar.sources>
+        <sonar.tests>src/test/java</sonar.tests>
+        <sonar.java.binaries>target/classes</sonar.java.binaries>
+        <sonar.sourceEncoding>UTF-8</sonar.sourceEncoding>
+        <sonar.duplications.hashtable>200000</sonar.duplications.hashtable>
+        <sonar.duplications>always</sonar.duplications>
+    </properties>
+
 
     <dependencies>
-        <!-- JUnit 5 dependency for unit testing (JUnit 4 is removed) -->
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>5.7.2</version>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- Selenium Java dependency for automation testing -->
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
-            <version>4.27.0</version>
+            <version>4.18.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.10.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.github.bonigarcia</groupId>
+            <artifactId>webdrivermanager</artifactId>
+            <version>5.5.3</version>
         </dependency>
     </dependencies>
 
     <build>
         <plugins>
-            <!-- Maven Compiler Plugin (Java 17) -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0-M9</version>
                 <configuration>
-                    <source>17</source>
-                    <target>17</target>
+                    <includes>
+                        <include>**/*Test.java</include>
+                    </includes>
                 </configuration>
             </plugin>
 
-            <!-- SonarQube Scanner Plugin -->
             <plugin>
                 <groupId>org.sonarsource.scanner.maven</groupId>
                 <artifactId>sonar-maven-plugin</artifactId>
-                <version>3.9.1.2184</version>
-                <configuration>
-                    <sonar.jacoco.reportPaths>target/jacoco.exec</sonar.jacoco.reportPaths>
-                </configuration>
+                <version>3.9.0.2155</version>
             </plugin>
 
-            <!-- JaCoCo Maven Plugin for code coverage -->
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.8</version>
-                <executions>
-                    <!-- Prepare JaCoCo agent -->
-                    <execution>
-                        <id>prepare-agent</id> <!-- Unique ID -->
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
-                    <!-- Generate code coverage report -->
-                    <execution>
-                        <id>generate-report</id> <!-- Unique ID -->
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                        <phase>prepare-package</phase>
-                    </execution>
-                </executions>
-            </plugin>
+             <!-- Maven Surefire Plugin for running tests -->
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.1.2</version>
+        </plugin>
+
+        <!-- JaCoCo Plugin for Code Coverage -->
+        <plugin>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>0.8.10</version>
+            <executions>
+                <execution>
+                    <goals>
+                        <goal>prepare-agent</goal>
+                    </goals>
+                </execution>
+                <execution>
+                    <id>report</id>
+                    <phase>test</phase>
+                    <goals>
+                        <goal>report</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
+
+
+
         </plugins>
     </build>
-
-    <properties>
-        <!-- SonarQube properties -->
-        <sonar.projectKey>assessment2</sonar.projectKey>
-        <sonar.host.url>http://localhost:9000</sonar.host.url>
-        <sonar.login>${env.SONAR_TOKEN}</sonar.login> <!-- SonarQube token from environment variable -->
-    </properties>
 </project>
