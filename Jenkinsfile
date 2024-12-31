@@ -59,6 +59,7 @@ pipeline {
                   -Dsonar.tests=src/test/java ^
                   -Dsonar.java.binaries=target/classes ^
                   -Dsonar.host.url=http://localhost:9000 ^
+                  -Dsonar.jacoco.reportPath=target/jacoco.exec ^
                   -Dsonar.login=%SONAR_TOKEN%
                 '''
             }
