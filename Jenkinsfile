@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools {
-        maven 'sonarmaven' // Ensure "sonarmaven" is configured in Jenkins
+        maven 'sonarmaven'
     }
 
     environment {
@@ -38,13 +38,10 @@ pipeline {
             }
         }
 
-        stage('Package') {
+        stage('Check JaCoCo Report') {
             steps {
-                echo 'Packaging the compiled code...'
-                bat '''
-                set PATH=%MAVEN_PATH%;%PATH%
-                mvn package
-                '''
+                echo 'Checking JaCoCo report...'
+                bat 'dir target'
             }
         }
 
