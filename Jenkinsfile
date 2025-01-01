@@ -6,7 +6,6 @@ pipeline {
     }
 
     environment {
-        PATH = "${PATH};C:\\Windows\\System32"
         PATH = "${PATH};C:\\Windows\\System32;C:\\Users\\Yashu Kun\\Downloads\\apache-maven-3.9.9-bin\\apache-maven-3.9.9\\bin"
         SONAR_TOKEN = credentials('s')
     }
