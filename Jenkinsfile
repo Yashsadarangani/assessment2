@@ -1,15 +1,10 @@
 pipeline {
     agent any
 
-    tools {
-        maven 'sonarmaven'
-    }
-
     environment {
         MAVEN_PATH = 'C:\\Users\\Yashu Kun\\Downloads\\apache-maven-3.9.9-bin\\apache-maven-3.9.9\\bin'
         SONAR_TOKEN = credentials('sonarqube-credentials')
-        PATH = "${PATH};C:\\Windows\\System32"
-        PATH = "${PATH};${MAVEN_PATH}"
+        PATH = "${PATH};C:\\Windows\\System32;${MAVEN_PATH}"
     }
 
     stages {
@@ -51,8 +46,7 @@ pipeline {
                 echo 'Running SonarQube analysis...'
                 bat '''
                 set PATH=%MAVEN_PATH%;%PATH%
-                mvn sonar:sonar ^ 
-                  -Dsonar.login=%SONAR_TOKEN%
+                mvn sonar:sonar -Dsonar.login=%SONAR_TOKEN%
                 '''
             }
         }
