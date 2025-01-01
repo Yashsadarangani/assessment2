@@ -12,8 +12,8 @@
         <sonar.host.url>http://localhost:9000</sonar.host.url>
         <sonar.sources>src/main/java</sonar.sources>
         <sonar.tests>src/test/java</sonar.tests>
-        <Dsonar.jacoco.reportPath>target\jacoco.exec</Dsonar.jacoco.reportPath>
-        <sonar.java.binaries>target/classes</sonar.java.binaries>
+        <sonar.coverage.jacoco.xmlReportPaths>${project.build.directory}/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+        <sonar.java.binaries>${project.build.directory}/classes</sonar.java.binaries>
         <sonar.sourceEncoding>UTF-8</sonar.sourceEncoding>
         <sonar.duplications.hashtable>200000</sonar.duplications.hashtable>
         <sonar.duplications>always</sonar.duplications>
@@ -47,39 +47,31 @@
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.10</version>
                 <executions>
-                    <!-- This prepares the JaCoCo agent -->
                     <execution>
+                        <id>prepare-agent</id>
+                        <phase>initialize</phase>
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
                     </execution>
-
-                    <!-- This generates the code coverage report after tests run -->
                     <execution>
-                        <id>report</id>
+                        <id>generate-code-coverage-report</id>
                         <phase>test</phase>
                         <goals>
                             <goal>report</goal>
                         </goals>
                     </execution>
-                <execution>
-                    <id>prepare-report</id>
-                    <phase>prepare-package</phase>
-                    <goals>
-                        <goal>report-aggregate</goal>
-                    </goals>
-                </execution>    
                 </executions>
             </plugin>
 
-            <!-- Maven Surefire Plugin for running tests -->
+            <!-- Surefire Plugin for Unit Tests -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.1.2</version>
                 <configuration>
                     <includes>
-                        <include>**/*Test.java</include>  <!-- Specify test pattern -->
+                        <include>**/*Test.java</include>
                     </includes>
                 </configuration>
             </plugin>
@@ -89,14 +81,6 @@
                 <groupId>org.sonarsource.scanner.maven</groupId>
                 <artifactId>sonar-maven-plugin</artifactId>
                 <version>3.9.0.2155</version>
-                <executions>
-                    <execution>
-                        <!-- This will trigger the SonarQube analysis at the end of the build -->
-                        <goals>
-                            <goal>sonar</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
