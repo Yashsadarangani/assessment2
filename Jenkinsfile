@@ -62,6 +62,7 @@ pipeline {
                   -Dsonar.host.url=http://localhost:9000 ^
                   -Dsonar.token=sqa_e0d66921a5e37d4859d748d025d4fe0c23afcbc7 ^
                   -Dsonar.duplications.hashtable=200000 ^
+                  -Dsonar.jacoco.reportPath=target/jacoco.exec ^
                   -Dsonar.duplications=always
                 '''
             }
