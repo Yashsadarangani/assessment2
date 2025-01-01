@@ -41,6 +41,16 @@ pipeline {
             }
         }
 
+        stage('Compile') {
+            steps {
+                echo 'Compiling project...'
+                bat '''
+                set PATH=%MAVEN_PATH%;%PATH%
+                mvn compile
+                '''
+            }
+        }
+
         stage('SonarQube Analysis') {
             steps {
                 echo 'Running SonarQube analysis...'
