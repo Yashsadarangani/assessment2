@@ -52,7 +52,7 @@ pipeline {
                   -Dsonar.java.binaries=target/classes ^
                   -Dsonar.host.url=http://localhost:9000 ^
                   -Dsonar.token=sqa_e0d66921a5e37d4859d748d025d4fe0c23afcbc7 ^
-                  -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml ^
+                  -Dsonar.jacoco.reportPath=target\\jacoco.exec ^
                   -Dsonar.duplications.hashtable=200000 ^
                   -Dsonar.duplications=always
                 '''
