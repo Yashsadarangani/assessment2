@@ -1,10 +1,14 @@
 pipeline {
     agent any
 
+    tools {
+        maven 'sonarmaven'
+    }
+
     environment {
+        PATH = "${PATH};C:\\Windows\\System32"
         MAVEN_PATH = 'C:\\Users\\Yashu Kun\\Downloads\\apache-maven-3.9.9-bin\\apache-maven-3.9.9\\bin'
         SONAR_TOKEN = credentials('sonarqube-credentials')
-        PATH = "${PATH};C:\\Windows\\System32;${MAVEN_PATH}"
     }
 
     stages {
@@ -14,19 +18,19 @@ pipeline {
             }
         }
 
-        stage('Build') {
+        stage('Clean target folder') {
             steps {
-                echo 'Building project...'
+                echo 'Cleaning target directory...'
                 bat '''
                 set PATH=%MAVEN_PATH%;%PATH%
-                mvn clean install
+                mvn clean
                 '''
             }
         }
 
         stage('Test') {
             steps {
-                echo 'Running tests...'
+                echo 'Testing the project...'
                 bat '''
                 set PATH=%MAVEN_PATH%;%PATH%
                 mvn test
@@ -34,19 +38,12 @@ pipeline {
             }
         }
 
-        stage('Check JaCoCo Report') {
+        stage('Package') {
             steps {
-                echo 'Checking JaCoCo report...'
-                bat 'if exist target\\jacoco.exec echo JaCoCo report found.'
-            }
-        }
-
-        stage('Compile') {
-            steps {
-                echo 'Compiling project...'
+                echo 'Packaging the compiled code...'
                 bat '''
                 set PATH=%MAVEN_PATH%;%PATH%
-                mvn compile
+                mvn package
                 '''
             }
         }
@@ -56,7 +53,15 @@ pipeline {
                 echo 'Running SonarQube analysis...'
                 bat '''
                 set PATH=%MAVEN_PATH%;%PATH%
-                mvn sonar:sonar -Dsonar.login=%SONAR_TOKEN%
+                mvn sonar:sonar ^
+                  -Dsonar.projectKey=assessment2 ^
+                  -Dsonar.sources=src/main/java ^
+                  -Dsonar.tests=src/test/java ^
+                  -Dsonar.java.binaries=target/classes ^
+                  -Dsonar.host.url=http://localhost:9000 ^
+                  -Dsonar.token=%SONAR_TOKEN% ^
+                  -Dsonar.duplications.hashtable=200000 ^
+                  -Dsonar.duplications=always
                 '''
             }
         }
