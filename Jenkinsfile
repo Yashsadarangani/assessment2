@@ -8,7 +8,7 @@ pipeline {
     environment {
         PATH = "${PATH};C:\\Windows\\System32"
         MAVEN_PATH = 'C:\\Users\\Yashu Kun\\Downloads\\apache-maven-3.9.9-bin\\apache-maven-3.9.9\\bin'
-        SONAR_TOKEN = credentials('sonarqube-credentials')
+        SONAR_TOKEN = credentials('s')
     }
 
     stages {
