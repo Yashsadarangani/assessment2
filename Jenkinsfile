@@ -23,6 +23,7 @@ pipeline {
                 echo 'Cleaning target directory...'
                 bat '''
                 set PATH=%MAVEN_PATH%;%PATH%
+                mvn clean install
                 mvn clean
                 '''
             }
