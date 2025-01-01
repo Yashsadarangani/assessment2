@@ -45,6 +45,8 @@ pipeline {
                 bat '''
                 set PATH=%MAVEN_PATH%;%PATH%
                 mvn package
+                dir target
+
                 '''
             }
         }
