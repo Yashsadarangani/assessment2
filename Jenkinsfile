@@ -13,6 +13,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
+                echo 'Checking out code from SCM...'
                 checkout scm
             }
         }
@@ -26,17 +27,22 @@ pipeline {
 
         stage('Test') {
             steps {
-                echo 'Testing the project...'
+                echo 'Running tests and generating JaCoCo coverage data...'
                 bat 'mvn test'
             }
         }
 
-        stage('Package') {
+        stage('Package and Generate Coverage Report') {
             steps {
-                echo 'Packaging the compiled code...'
+                echo 'Packaging the compiled code and generating coverage report...'
                 bat '''
-                mvn package
-                dir target  // Verify that jacoco.xml is generated here
+                mvn verify
+                if exist target\\site\\jacoco\\jacoco.xml (
+                  echo "JaCoCo XML Report successfully generated."
+                ) else (
+                  echo "Error: JaCoCo XML Report not found in target/site/jacoco/jacoco.xml."
+                  exit 1
+                )
                 '''
             }
         }
@@ -45,15 +51,15 @@ pipeline {
             steps {
                 echo 'Running SonarQube analysis...'
                 bat '''
-                mvn sonar:sonar ^
-                  -Dsonar.projectKey=assessment2 ^
-                  -Dsonar.sources=src/main/java ^
-                  -Dsonar.tests=src/test/java ^
-                  -Dsonar.java.binaries=target/classes ^
-                  -Dsonar.host.url=http://localhost:9000 ^
-                  -Dsonar.token=sqa_e0d66921a5e37d4859d748d025d4fe0c23afcbc7 ^
-                  -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml ^
-                  -Dsonar.duplications.hashtable=200000 ^
+                mvn sonar:sonar ^ 
+                  -Dsonar.projectKey=assessment2 ^ 
+                  -Dsonar.sources=src/main/java ^ 
+                  -Dsonar.tests=src/test/java ^ 
+                  -Dsonar.java.binaries=target/classes ^ 
+                  -Dsonar.host.url=http://localhost:9000 ^ 
+                  -Dsonar.token=%SONAR_TOKEN% ^ 
+                  -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml ^ 
+                  -Dsonar.duplications.hashtable=200000 ^ 
                   -Dsonar.duplications=always
                 '''
             }
