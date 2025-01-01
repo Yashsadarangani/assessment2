@@ -9,6 +9,7 @@ pipeline {
         MAVEN_PATH = 'C:\\Users\\Yashu Kun\\Downloads\\apache-maven-3.9.9-bin\\apache-maven-3.9.9\\bin'
         SONAR_TOKEN = credentials('sonarqube-credentials')
         PATH = "${PATH};C:\\Windows\\System32"
+        PATH = "${PATH};${MAVEN_PATH}"
     }
 
     stages {
@@ -18,13 +19,12 @@ pipeline {
             }
         }
 
-        stage('Clean target folder') {
+        stage('Build') {
             steps {
-                echo 'Cleaning target directory...'
+                echo 'Building project...'
                 bat '''
                 set PATH=%MAVEN_PATH%;%PATH%
                 mvn clean install
-                mvn clean
                 '''
             }
         }
@@ -42,7 +42,7 @@ pipeline {
         stage('Check JaCoCo Report') {
             steps {
                 echo 'Checking JaCoCo report...'
-                bat 'dir target'
+                bat 'if exist target\\jacoco.exec echo JaCoCo report found.'
             }
         }
 
@@ -51,13 +51,7 @@ pipeline {
                 echo 'Running SonarQube analysis...'
                 bat '''
                 set PATH=%MAVEN_PATH%;%PATH%
-                mvn sonar:sonar ^
-                  -Dsonar.projectKey=assessment2 ^
-                  -Dsonar.sources=src/main/java ^
-                  -Dsonar.tests=src/test/java ^
-                  -Dsonar.java.binaries=target/classes ^
-                  -Dsonar.host.url=http://localhost:9000 ^
-                  -Dsonar.jacoco.reportPath=target/jacoco.exec ^
+                mvn sonar:sonar ^ 
                   -Dsonar.login=%SONAR_TOKEN%
                 '''
             }
