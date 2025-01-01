@@ -1,4 +1,6 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.example</groupId>
@@ -8,15 +10,10 @@
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <sonar.projectKey>assessment2</sonar.projectKey>
         <sonar.host.url>http://localhost:9000</sonar.host.url>
-        <sonar.sources>src/main/java</sonar.sources>
-        <sonar.tests>src/test/java</sonar.tests>
         <sonar.coverage.jacoco.xmlReportPaths>${project.build.directory}/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
-        <sonar.java.binaries>${project.build.directory}/classes</sonar.java.binaries>
-        <sonar.sourceEncoding>UTF-8</sonar.sourceEncoding>
-        <sonar.duplications.hashtable>200000</sonar.duplications.hashtable>
-        <sonar.duplications>always</sonar.duplications>
     </properties>
 
     <dependencies>
@@ -55,8 +52,8 @@
                         </goals>
                     </execution>
                     <execution>
-                        <id>generate-code-coverage-report</id>
-                        <phase>package</phase>
+                        <id>report</id>
+                        <phase>verify</phase>
                         <goals>
                             <goal>report</goal>
                         </goals>
@@ -64,6 +61,7 @@
                             <outputDirectory>${project.build.directory}/site/jacoco</outputDirectory>
                             <formats>
                                 <format>XML</format>
+                                <format>HTML</format>
                             </formats>
                         </configuration>
                     </execution>
