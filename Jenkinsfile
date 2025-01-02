@@ -7,7 +7,7 @@ pipeline {
 
     environment {
         PATH = "${PATH};C:\\Windows\\System32;C:\\Users\\Yashu Kun\\Downloads\\apache-maven-3.9.9-bin\\apache-maven-3.9.9\\bin"
-        SONAR_TOKEN = credentials('s') // Replace with your credential ID
+        SONAR_TOKEN = credentials('s')
     }
 
     stages {
@@ -28,7 +28,7 @@ pipeline {
         stage('Build and Test') {
             steps {
                 echo 'Building project and running tests...'
-                bat 'mvn clean verify'
+                bat 'mvn clean verify -DskipTests=false'
             }
         }
 
@@ -39,7 +39,7 @@ pipeline {
                 if exist target\\site\\jacoco\\jacoco.xml (
                   echo "JaCoCo XML Report successfully generated."
                 ) else (
-                  echo "Error: JaCoCo XML Report not found in target/site/jacoco/jacoco.xml."
+                  echo "Error: JaCoCo XML Report not found."
                   exit 1
                 )
                 '''
@@ -57,9 +57,7 @@ pipeline {
                   -Dsonar.java.binaries=target/classes ^
                   -Dsonar.host.url=http://localhost:9000 ^
                   -Dsonar.token=%SONAR_TOKEN% ^
-                  -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml ^
-                  -Dsonar.duplications.hashtable=200000 ^
-                  -Dsonar.duplications=always
+                  -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
                 '''
             }
         }
