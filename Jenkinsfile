@@ -60,6 +60,7 @@ pipeline {
                   -Dsonar.host.url=http://localhost:9000 ^
                   -Dsonar.token=%SONAR_TOKEN% ^
                   -Dsonar.duplications.hashtable=200000 ^
+                  -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml ^
                   -Dsonar.duplications=always
                 '''
             }
