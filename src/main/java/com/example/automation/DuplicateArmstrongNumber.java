@@ -1,6 +1,6 @@
 package com.example.automation;
 
-public class ArmstrongNumber {
+public class DuplicateArmstrongNumber {
 
     // Method to check if a number is an Armstrong number
     public boolean isArmstrong(int number) {
