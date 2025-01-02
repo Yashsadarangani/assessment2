@@ -49,7 +49,7 @@ public class DuplicateArmstrongNumber {
     }
 
     public static void main(String[] args) {
-        ArmstrongNumber armstrongNumber = new ArmstrongNumber();
+        DuplicateArmstrongNumber armstrongNumber = new DuplicateArmstrongNumber();
 
         int testNumber1 = 153;
         int testNumber2 = 9474;
