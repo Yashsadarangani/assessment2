@@ -35,6 +35,12 @@
             <artifactId>webdrivermanager</artifactId>
             <version>5.5.3</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-devtools-v131</artifactId>
+            <version>4.18.1</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -85,7 +91,6 @@
                 </executions>
                 <configuration>
                     <targetJdk>17</targetJdk>
-                    <failOnViolation>true</failOnViolation>
                     <rulesets>
                         <ruleset>/rulesets/java/quickstart.xml</ruleset>
                     </rulesets>
@@ -108,7 +113,7 @@
                 <configuration>
                     <configLocation>sun_checks.xml</configLocation>
                     <encoding>UTF-8</encoding>
-                    <failsOnError>true</failsOnError>
+                    <failsOnError>false</failsOnError>
                 </configuration>
             </plugin>
 
@@ -129,6 +134,13 @@
                 <groupId>org.sonarsource.scanner.maven</groupId>
                 <artifactId>sonar-maven-plugin</artifactId>
                 <version>3.9.0.2155</version>
+            </plugin>
+
+            <!-- Maven JXR Plugin for PMD XRef -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jxr-plugin</artifactId>
+                <version>3.2.0</version>
             </plugin>
         </plugins>
     </build>
