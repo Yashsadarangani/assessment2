@@ -14,6 +14,7 @@
         <sonar.projectKey>assessment2</sonar.projectKey>
         <sonar.host.url>http://localhost:9000</sonar.host.url>
         <sonar.coverage.jacoco.xmlReportPaths>${project.build.directory}/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+        <sonar.sourceEncoding>UTF-8</sonar.sourceEncoding>
     </properties>
 
     <dependencies>
@@ -44,6 +45,7 @@
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.10</version>
                 <executions>
+                    <!-- Attach JaCoCo agent during tests -->
                     <execution>
                         <id>prepare-agent</id>
                         <phase>initialize</phase>
@@ -51,6 +53,7 @@
                             <goal>prepare-agent</goal>
                         </goals>
                     </execution>
+                    <!-- Generate JaCoCo XML and HTML reports -->
                     <execution>
                         <id>generate-code-coverage-report</id>
                         <phase>verify</phase>
@@ -59,10 +62,10 @@
                         </goals>
                         <configuration>
                             <outputDirectory>${project.build.directory}/site/jacoco</outputDirectory>
-                            <formats>
-                                <format>XML</format>
-                                <format>HTML</format>
-                            </formats>
+                            <outputFormats>
+                                <outputFormat>XML</outputFormat>
+                                <outputFormat>HTML</outputFormat>
+                            </outputFormats>
                         </configuration>
                     </execution>
                 </executions>
