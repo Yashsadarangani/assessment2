@@ -85,6 +85,7 @@
                 </executions>
                 <configuration>
                     <targetJdk>17</targetJdk>
+                    <failOnViolation>true</failOnViolation>
                     <rulesets>
                         <ruleset>/rulesets/java/quickstart.xml</ruleset>
                     </rulesets>
