@@ -8,7 +8,7 @@ pipeline {
     environment {
         JAVA_PATH = "C:\\Program Files\\Java\\jdk-17\\bin"
         MAVEN_HOME = "C:\\Users\\Yashu Kun\\Downloads\\apache-maven-3.9.9-bin\\apache-maven-3.9.9\\bin"
-        SONAR_TOKEN = credentials('sonar-token') // Add your SonarQube token as a Jenkins credential
+        SONAR_TOKEN = credentials('s') // Add your SonarQube token as a Jenkins credential
         PATH = "${env.PATH};${JAVA_PATH};${MAVEN_HOME}\\bin;C:\\Windows\\System32"
     }
 
