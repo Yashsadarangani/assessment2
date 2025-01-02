@@ -2,53 +2,76 @@ pipeline {
     agent any
 
     tools {
-        maven 'sonarmaven' // You should have a Maven tool installed with this name in Jenkins
+        maven 'sonarmaven'
     }
 
     environment {
-        JAVA_PATH = "C:\\Program Files\\Java\\jdk-17\\bin"
-        MAVEN_HOME = "C:\\Users\\Yashu Kun\\Downloads\\apache-maven-3.9.9-bin\\apache-maven-3.9.9\\bin"
-        SONAR_TOKEN = credentials('s') // Add your SonarQube token as a Jenkins credential
-        PATH = "${env.PATH};${JAVA_PATH};${MAVEN_HOME}\\bin;C:\\Windows\\System32"
+        MAVEN_PATH = 'C:\\Users\\Yashu Kun\\Downloads\\apache-maven-3.9.9-bin\\apache-maven-3.9.9\\bin'
+        SONAR_TOKEN = credentials('sonarqube-credential')
     }
 
     stages {
-        stage('Checkout Code') {
+        stage('Checkout') {
             steps {
                 checkout scm
             }
         }
 
-        stage('Build') {
+        stage('Clean target folder') {
             steps {
-                bat 'mvn clean install -U' // Run Maven clean and install
+                echo 'Cleaning target directory...'
+                bat '''
+                set PATH=%MAVEN_PATH%;%PATH%
+                mvn clean
+                '''
+            }
+        }
+
+        stage('Test') {
+            steps {
+                echo 'Testing the project...'
+                bat '''
+                set PATH=%MAVEN_PATH%;%PATH%
+                mvn test
+                '''
+            }
+        }
+
+        stage('Package') {
+            steps {
+                echo 'Packaging the compiled code...'
+                bat '''
+                set PATH=%MAVEN_PATH%;%PATH%
+                mvn package
+                '''
             }
         }
 
         stage('SonarQube Analysis') {
             steps {
-                bat """
-                    mvn clean verify sonar:sonar \
-                    -Dsonar.projectKey=assessment2 \
-                    -Dsonar.projectName='automation' \
-                    -Dsonar.host.url=http://localhost:9000 \
-                    -Dsonar.token=${SONAR_TOKEN} \
-                    -Dsonar.java.binaries=target/classes \
-                    -Dsonar.sources=src/main/java \
-                    -Dsonar.tests=src/test/java \
-                    -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
-                """
+                echo 'Running SonarQube analysis...'
+                bat '''
+                set PATH=%MAVEN_PATH%;%PATH%
+                mvn sonar:sonar ^
+                  -Dsonar.projectKey=assessment2 ^
+                  -Dsonar.sources=src/main/java ^
+                  -Dsonar.tests=src/test/java ^
+                  -Dsonar.java.binaries=target/classes ^
+                  -Dsonar.host.url=http://localhost:9000 ^
+                  -Dsonar.token=%SONAR_TOKEN% ^
+                  -Dsonar.duplications.hashtable=200000 ^
+                  -Dsonar.duplications=always
+                '''
             }
         }
     }
 
     post {
         success {
-            echo "Build and SonarQube analysis completed successfully."
+            echo 'Pipeline completed successfully.'
         }
-
         failure {
-            echo "Build or SonarQube analysis failed."
+            echo 'Pipeline failed. Check logs for details.'
         }
     }
 }
