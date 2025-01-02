@@ -32,15 +32,27 @@ pipeline {
             }
         }
 
+        stage('Checkstyle Validation') {
+            steps {
+                script {
+                    try {
+                        bat 'mvn checkstyle:check'
+                    } catch (Exception e) {
+                        echo "Checkstyle found violations, but pipeline will continue."
+                    }
+                }
+            }
+        }
+
         stage('Validate JaCoCo Report') {
             steps {
-                echo 'Validating JaCoCo coverage report...'
+                echo 'Validating JaCoCo XML Report...'
                 bat '''
                 if exist target\\site\\jacoco\\jacoco.xml (
-                  echo "JaCoCo XML Report successfully generated."
+                    echo "JaCoCo XML Report successfully validated."
                 ) else (
-                  echo "Error: JaCoCo XML Report not found."
-                  exit 1
+                    echo "Error: JaCoCo XML Report not found in target/site/jacoco/jacoco.xml."
+                    exit 1
                 )
                 '''
             }
@@ -50,14 +62,16 @@ pipeline {
             steps {
                 echo 'Running SonarQube analysis...'
                 bat '''
-                mvn sonar:sonar ^
-                  -Dsonar.projectKey=assessment2 ^
-                  -Dsonar.sources=src/main/java ^
-                  -Dsonar.tests=src/test/java ^
-                  -Dsonar.java.binaries=target/classes ^
-                  -Dsonar.host.url=http://localhost:9000 ^
-                  -Dsonar.token=%SONAR_TOKEN% ^
-                  -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
+                mvn sonar:sonar ^ 
+                  -Dsonar.projectKey=assessment2 ^ 
+                  -Dsonar.sources=src/main/java ^ 
+                  -Dsonar.tests=src/test/java ^ 
+                  -Dsonar.java.binaries=target/classes ^ 
+                  -Dsonar.host.url=http://localhost:9000 ^ 
+                  -Dsonar.token=%SONAR_TOKEN% ^ 
+                  -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml ^ 
+                  -Dsonar.duplications.hashtable=200000 ^ 
+                  -Dsonar.duplications=always
                 '''
             }
         }
