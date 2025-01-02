@@ -23,12 +23,11 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 bat """
-                    mvn clean verify sonar:sonar ^
-                    -Dsonar.projectKey=assessment2 ^
-                    -Dsonar.projectName='automation' ^
-                    -Dsonar.source=. ^
-                    -Dsonar.host.url=http://localhost:9000 ^
-                    -Dsonar.token=${SONAR_TOKEN} 
+                   mvn clean verify sonar:sonar \
+                  -Dsonar.projectKey=assessment2 \
+                  -Dsonar.projectName='automation' \
+                  -Dsonar.host.url=http://localhost:9000 \
+                  -Dsonar.token=sqa_e0d66921a5e37d4859d748d025d4fe0c23afcbc7
                 """
             }
         }
