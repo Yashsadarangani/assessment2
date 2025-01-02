@@ -2,7 +2,7 @@ package com.example.automation;
 
 public class DuplicateArmstrongNumber {
 
-    // Method to check if a number is an Armstrong number
+    // Original method
     public boolean isArmstrong(int number) {
         int originalNumber = number;
         int sum = 0;
@@ -17,7 +17,7 @@ public class DuplicateArmstrongNumber {
         return sum == originalNumber;
     }
 
-    // Duplicate method 1 (slight change in variable names)
+    // Duplicate method 1
     public boolean checkArmstrong(int num) {
         int origNum = num;
         int total = 0;
@@ -32,7 +32,7 @@ public class DuplicateArmstrongNumber {
         return total == origNum;
     }
 
-    // Duplicate method 2 (directly checks another hardcoded number)
+    // Duplicate method 2
     public boolean isHardcodedArmstrong() {
         int hardcodedNumber = 9474;
         int originalNumber = hardcodedNumber;
@@ -48,6 +48,36 @@ public class DuplicateArmstrongNumber {
         return sum == originalNumber;
     }
 
+    // Duplicate method 3
+    public boolean verifyArmstrong(int inputNumber) {
+        int tempNumber = inputNumber;
+        int resultSum = 0;
+        int digitLength = String.valueOf(inputNumber).length();
+
+        while (tempNumber != 0) {
+            int digit = tempNumber % 10;
+            resultSum += Math.pow(digit, digitLength);
+            tempNumber /= 10;
+        }
+
+        return resultSum == inputNumber;
+    }
+
+    // Duplicate method 4
+    public boolean validateArmstrongNumber(int givenNumber) {
+        int backupNumber = givenNumber;
+        int computedSum = 0;
+        int numberOfDigits = String.valueOf(givenNumber).length();
+
+        while (givenNumber != 0) {
+            int currentDigit = givenNumber % 10;
+            computedSum += Math.pow(currentDigit, numberOfDigits);
+            givenNumber /= 10;
+        }
+
+        return computedSum == backupNumber;
+    }
+
     public static void main(String[] args) {
         DuplicateArmstrongNumber armstrongNumber = new DuplicateArmstrongNumber();
 
@@ -55,24 +85,12 @@ public class DuplicateArmstrongNumber {
         int testNumber2 = 9474;
 
         // Using the original method
-        if (armstrongNumber.isArmstrong(testNumber1)) {
-            System.out.println(testNumber1 + " is an Armstrong number.");
-        } else {
-            System.out.println(testNumber1 + " is not an Armstrong number.");
-        }
+        System.out.println(testNumber1 + " is an Armstrong number: " + armstrongNumber.isArmstrong(testNumber1));
 
-        // Using the duplicate method 1
-        if (armstrongNumber.checkArmstrong(testNumber2)) {
-            System.out.println(testNumber2 + " is an Armstrong number.");
-        } else {
-            System.out.println(testNumber2 + " is not an Armstrong number.");
-        }
-
-        // Using the duplicate method 2
-        if (armstrongNumber.isHardcodedArmstrong()) {
-            System.out.println("9474 is an Armstrong number.");
-        } else {
-            System.out.println("9474 is not an Armstrong number.");
-        }
+        // Using duplicate methods
+        System.out.println(testNumber2 + " is an Armstrong number (checkArmstrong): " + armstrongNumber.checkArmstrong(testNumber2));
+        System.out.println(testNumber2 + " is an Armstrong number (isHardcodedArmstrong): " + armstrongNumber.isHardcodedArmstrong());
+        System.out.println(testNumber2 + " is an Armstrong number (verifyArmstrong): " + armstrongNumber.verifyArmstrong(testNumber2));
+        System.out.println(testNumber2 + " is an Armstrong number (validateArmstrongNumber): " + armstrongNumber.validateArmstrongNumber(testNumber2));
     }
 }
